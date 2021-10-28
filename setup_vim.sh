@@ -65,5 +65,7 @@ au ColorScheme * hi GitGutterDelete       guibg=#1a1b26
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
+nmap go :rightb vert term<CR>
+
 EOF
 
