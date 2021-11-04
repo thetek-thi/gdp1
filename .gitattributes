@@ -1,2 +1,2 @@
-codeexamples/*.* linguist-vendored
+codeexamples/* linguist-vendored
 
