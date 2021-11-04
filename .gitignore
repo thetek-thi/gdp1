@@ -7,3 +7,6 @@
 # unignore all dirs
 !*/
 
+# unignore makefiles
+!Makefile
+
