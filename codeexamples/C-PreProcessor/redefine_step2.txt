@@ -1,4 +1,0 @@
-#define A gruen
-
-int x;
-
