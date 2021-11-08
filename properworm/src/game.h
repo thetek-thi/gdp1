@@ -3,6 +3,7 @@
 
 void game_start ();
 void game_draw_outline ();
+void game_show_stats ();
 
 #endif
 
