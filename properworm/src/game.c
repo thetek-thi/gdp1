@@ -8,6 +8,10 @@
 int worm_length  = 0,
     worm_time_ms = 0;
 
+int worm_pos_x = 1,
+    worm_pos_y = 1;
+direction worm_dir = DIR_RIGHT;
+
 
 
 void
@@ -25,13 +29,15 @@ game_start ()
     int end_loop = 0;
     while (end_loop == 0)
     {
-        if (getch () == 'q')
+        int ch = getch ();
+        switch (ch)
         {
-            end_loop = 1;
-        } else {
-            napms (100);
-            worm_time_ms += 100;
-            game_show_stats ();
+            case 'q': end_loop = 1; break;
+            case 'w': case 'k': worm_tick (); worm_pos_update (DIR_UP);    break;
+            case 'a': case 'h': worm_tick (); worm_pos_update (DIR_LEFT);  break;
+            case 's': case 'j': worm_tick (); worm_pos_update (DIR_DOWN);  break;
+            case 'd': case 'l': worm_tick (); worm_pos_update (DIR_RIGHT); break;
+            default: worm_tick (); worm_pos_update (DIR_NONE);
         }
     }
 }
@@ -97,5 +103,37 @@ game_show_stats ()
     mvprintw (LINES-1, 24, "%6.1fs", worm_time_ms / 1000.0);
 
     refresh ();
+}
+
+
+
+void
+worm_tick ()
+{
+    napms (100);
+    worm_time_ms += 100;
+    game_show_stats ();
+}
+
+
+
+void
+worm_pos_update (direction dir)
+{
+    if (dir != DIR_NONE)
+        worm_dir = dir;
+
+    switch (worm_dir)
+    {
+        case DIR_LEFT:  worm_pos_x--; break;
+        case DIR_RIGHT: worm_pos_x++; break;
+        case DIR_UP:    worm_pos_y--; break;
+        case DIR_DOWN:  worm_pos_y++; break;
+        default: break;
+    }
+
+    attron (COLOR_PAIR (COLP_ACCENT));
+    mvprintw (worm_pos_y+1, worm_pos_x*2+1, "██");
+    attroff (COLOR_PAIR (COLP_ACCENT));
 }
 
