@@ -39,7 +39,7 @@ main (void)
         printf ("window to small: we need %dx%d", msg_len, min_rows);
         rescode = EXIT_FAILURE;
     } else {
-        int mid_row = LINES / 2 + 1;
+        int mid_row = LINES / 2;
         int start_col = (COLS - msg_len) / 2;
 
         move (0,       0     ); addch ('A');
