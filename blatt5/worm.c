@@ -250,9 +250,9 @@ show_worm ()
     // delete last element
     place_item (
         // i have no idea why i need to subtract (not add) the worm length here, and nor do i have an idea why i need to
-        // add the max worm length by a factor of two but it doesnt work without it so i might just leave it like that
-        worm_pos[(worm_head_index - worm_len + 2*WORM_MAX_LEN) % WORM_MAX_LEN].y,
-        worm_pos[(worm_head_index - worm_len + 2*WORM_MAX_LEN) % WORM_MAX_LEN].x,
+        // add the max worm length but it doesnt work without it so i might just leave it like that
+        worm_pos[(worm_head_index - worm_len + 1*WORM_MAX_LEN) % WORM_MAX_LEN].y,
+        worm_pos[(worm_head_index - worm_len + 1*WORM_MAX_LEN) % WORM_MAX_LEN].x,
         EMPTY_SYMBOL,
         COLP_EMPTY_CELL
     );
