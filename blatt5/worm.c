@@ -35,6 +35,7 @@ typedef enum _game_state
 {
     GAME_STATE_ONGOING,
     GAME_STATE_OUT_OF_BOUNDS,
+    GAME_STATE_COLLISION,
     GAME_STATE_QUIT,
 } game_state_t;
 
@@ -59,7 +60,7 @@ int worm_dx,     // heading of worm
 
 vec worm_pos[WORM_MAX_LEN]; // worm position in vector array, max length 20
 int worm_head_index = 0;
-int worm_len = 5;
+int worm_len = 15;
 
 
 
@@ -251,8 +252,8 @@ show_worm ()
     place_item (
         // i have no idea why i need to subtract (not add) the worm length here, and nor do i have an idea why i need to
         // add the max worm length but it doesnt work without it so i might just leave it like that
-        worm_pos[(worm_head_index - worm_len + 1*WORM_MAX_LEN) % WORM_MAX_LEN].y,
-        worm_pos[(worm_head_index - worm_len + 1*WORM_MAX_LEN) % WORM_MAX_LEN].x,
+        worm_pos[(worm_head_index - worm_len + WORM_MAX_LEN) % WORM_MAX_LEN].y,
+        worm_pos[(worm_head_index - worm_len + WORM_MAX_LEN) % WORM_MAX_LEN].x,
         EMPTY_SYMBOL,
         COLP_EMPTY_CELL
     );
@@ -276,7 +277,15 @@ move_worm (game_state_t* state)
     {
         *state = GAME_STATE_OUT_OF_BOUNDS;
     }
+
+    for (int i = 1; i < worm_len; i++)
+    {
+        if (worm_pos[(worm_head_index - i + WORM_MAX_LEN) % WORM_MAX_LEN].x == worm_pos[worm_head_index].x &&
+            worm_pos[(worm_head_index - i + WORM_MAX_LEN) % WORM_MAX_LEN].y == worm_pos[worm_head_index].y)
+            *state = GAME_STATE_COLLISION;
+    }
 }
+
 
 
 
