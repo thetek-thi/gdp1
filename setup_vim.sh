@@ -68,5 +68,7 @@ nmap ga <Plug>(EasyAlign)
 
 nmap go :rightb vert term<CR>
 
+autocmd BufReadPost,BufNew *.asm setfiletype nasm
+
 EOF
 
