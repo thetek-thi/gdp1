@@ -30,15 +30,20 @@ game_start ()
     while (end_loop == 0)
     {
         int ch = getch ();
+        direction dir = DIR_NONE;
         switch (ch)
         {
             case 'q': end_loop = 1; break;
-            case 'w': case 'k': worm_tick (); worm_pos_update (DIR_UP);    break;
-            case 'a': case 'h': worm_tick (); worm_pos_update (DIR_LEFT);  break;
-            case 's': case 'j': worm_tick (); worm_pos_update (DIR_DOWN);  break;
-            case 'd': case 'l': worm_tick (); worm_pos_update (DIR_RIGHT); break;
-            default: worm_tick (); worm_pos_update (DIR_NONE);
+            case 'w': case 'k': dir = DIR_UP;    break;
+            case 'a': case 'h': dir = DIR_LEFT;  break;
+            case 's': case 'j': dir = DIR_DOWN;  break;
+            case 'd': case 'l': dir = DIR_RIGHT; break;
+            default: worm_tick (); dir = DIR_NONE;
         }
+        if (ch != 'q')
+            worm_tick ();
+        if (worm_pos_update (dir))
+            end_loop = 1;
     }
 }
 
@@ -117,7 +122,7 @@ worm_tick ()
 
 
 
-void
+bool
 worm_pos_update (direction dir)
 {
     if (dir != DIR_NONE)
@@ -132,8 +137,24 @@ worm_pos_update (direction dir)
         default: break;
     }
 
+    bool oob = worm_check_oob ();
+    if (oob) return true;
+
     attron (COLOR_PAIR (COLP_ACCENT));
     mvprintw (worm_pos_y+1, worm_pos_x*2+1, "██");
     attroff (COLOR_PAIR (COLP_ACCENT));
+
+    return false;
+}
+
+
+
+bool
+worm_check_oob ()
+{
+    if (worm_pos_x <= 0 || worm_pos_x > (COLS/2)-3 ||
+        worm_pos_y <  0 || worm_pos_y > LINES-3)
+        return true;
+    return false;
 }
 

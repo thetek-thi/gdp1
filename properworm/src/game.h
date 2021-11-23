@@ -13,7 +13,8 @@ void game_start ();
 void game_draw_outline ();
 void game_show_stats ();
 void worm_tick ();
-void worm_pos_update (direction dir);
+bool worm_pos_update (direction dir);
+bool worm_check_oob ();
 
 #endif
 
