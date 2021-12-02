@@ -11,7 +11,7 @@ int worm_dx,     // heading of worm
 
 vec worm_pos[WORM_MAX_LEN]; // worm position in vector array, max length 20
 int worm_head_index = 0;
-int worm_len = 15;
+int worm_len = 10;
 
 
 
@@ -43,14 +43,6 @@ init_worm (int            head_y,
 void
 show_worm ()
 {
-    // show new element
-    place_item (
-        worm_pos[worm_head_index].y,
-        worm_pos[worm_head_index].x,
-        WORM_SYMBOL,
-        worm_wcolor
-    );
-
     // delete last element
     place_item (
         // i have no idea why i need to subtract (not add) the worm length here, and nor do i have an idea why i need to
@@ -59,6 +51,20 @@ show_worm ()
         worm_pos[(worm_head_index - worm_len + WORM_MAX_LEN) % WORM_MAX_LEN].x,
         EMPTY_SYMBOL,
         COLP_EMPTY_CELL
+    );
+    // show new element
+    place_item (
+        worm_pos[worm_head_index].y,
+        worm_pos[worm_head_index].x,
+        WORM_SYMBOL,
+        worm_wcolor
+    );
+
+    place_item (
+        worm_pos[(worm_head_index + 19) % WORM_MAX_LEN].y,
+        worm_pos[(worm_head_index + 19) % WORM_MAX_LEN].x,
+        'X',
+        worm_wcolor
     );
 }
 
