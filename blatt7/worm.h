@@ -1,3 +1,7 @@
+#include "worm_model.h"
+
+
+
 #ifndef _WORM_H
 #define _WORM_H
 
@@ -42,7 +46,7 @@ typedef enum _worm_heading
 
 
 void      init_colors     ();
-void      read_user_input (game_state_t* state);
+void      read_user_input (worm_t* worm, game_state_t* state);
 rescode_t do_level        ();
 
 
