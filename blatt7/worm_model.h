@@ -6,10 +6,14 @@
 #define _WORM_MODEL_H
 
 
-typedef struct _vec {
-    int x;
-    int y;
-} vec;
+typedef struct _worm {
+    int          dx;
+    int          dy;
+    color_pair_t color;
+    vec          pos [WORM_MAX_LEN];
+    int          head_index;
+    int          len;
+} worm_t;
 
 
 rescode_t init_worm        (int head_y, int head_x, worm_heading_t dir, color_pair_t color);
