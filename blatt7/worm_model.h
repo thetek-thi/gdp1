@@ -6,6 +6,12 @@
 #define _WORM_MODEL_H
 
 
+typedef struct _vec {
+    int x;
+    int y;
+} vec;
+
+
 rescode_t init_worm        (int head_y, int head_x, worm_heading_t dir, color_pair_t color);
 void      show_worm        ();
 void      move_worm        (game_state_t* state);

@@ -40,11 +40,6 @@ typedef enum _worm_heading
     WORM_RIGHT,
 } worm_heading_t;
 
-typedef struct _vec {
-    int x;
-    int y;
-} vec;
-
 
 void      init_colors     ();
 void      read_user_input (game_state_t* state);
