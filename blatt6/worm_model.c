@@ -63,7 +63,15 @@ show_worm ()
     place_item (
         worm_pos[(worm_head_index + 19) % WORM_MAX_LEN].y,
         worm_pos[(worm_head_index + 19) % WORM_MAX_LEN].x,
-        'X',
+        'o',
+        worm_wcolor
+    );
+
+
+    place_item (
+        worm_pos[(worm_head_index - worm_len + 21) % WORM_MAX_LEN].y,
+        worm_pos[(worm_head_index - worm_len + 21) % WORM_MAX_LEN].x,
+        '.',
         worm_wcolor
     );
 }
