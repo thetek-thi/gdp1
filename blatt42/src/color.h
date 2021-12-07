@@ -9,6 +9,7 @@ typedef enum {
     COLP_GREEN,
     COLP_ORANGE,
     COLP_PURPLE,
+    COLP_RED,
     COLP_VIOLET,
 } colorpair_t;
 
@@ -20,6 +21,7 @@ typedef enum {
     COL_GREEN,
     COL_ORANGE,
     COL_PURPLE,
+    COL_RED,
     COL_VIOLET,
 } color_t;
 

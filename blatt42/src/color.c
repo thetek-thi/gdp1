@@ -16,6 +16,7 @@ colors_init ()
     init_color (COL_GREEN,  584, 773, 380);
     init_color (COL_ORANGE, 965, 584, 357);
     init_color (COL_PURPLE, 890, 490, 886);
+    init_color (COL_RED,    933, 427, 522);
     init_color (COL_VIOLET, 643, 522, 867);
 
     init_pair (COLP_BLUE,   COL_BLUE,   COL_BG);
@@ -24,6 +25,7 @@ colors_init ()
     init_pair (COLP_GREEN,  COL_GREEN,  COL_BG);
     init_pair (COLP_ORANGE, COL_ORANGE, COL_BG);
     init_pair (COLP_PURPLE, COL_PURPLE, COL_BG);
+    init_pair (COLP_RED,    COL_RED,    COL_BG);
     init_pair (COLP_VIOLET, COL_VIOLET, COL_BG);
 }
 

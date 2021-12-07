@@ -34,6 +34,7 @@ void worm_move             (worm_t *worm);
 bool worm_check_collisions (worm_t *worm);
 bool worm_check_oob        (worm_t *worm);
 void worm_check_food       (worm_t *worm, food_t food[]);
+int  food_count            (food_t food[]);
 
 
 #endif

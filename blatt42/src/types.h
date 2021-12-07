@@ -14,5 +14,14 @@ typedef struct {
 } food_t;
 
 
+typedef enum {
+    EXITMSG_NONE,
+    EXITMSG_SUCCESS,
+    EXITMSG_COLLISION_OBSTACLE,
+    EXITMSG_COLLISION_SELF,
+    EXITMSG_OOB,
+} exitmsg_t;
+
+
 #endif
 

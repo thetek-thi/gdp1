@@ -94,10 +94,24 @@ worm_read_input (worm_t *worm, food_t food[])
         worm_move       (worm);
         worm_show       (worm);
         worm_check_food (worm, food);
-        ui_update_msg   (worm, food);
 
-        if (worm_check_collisions (worm) || worm_check_oob (worm))
+        if (worm_check_collisions (worm))
+        {
+            ui_update_msg (worm, food, EXITMSG_COLLISION_SELF);
             return;
+        }
+        else if (worm_check_oob (worm))
+        {
+            ui_update_msg (worm, food, EXITMSG_OOB);
+            return;
+        }
+        else if (food_count (food) <= 0)
+        {
+            ui_update_msg (worm, food, EXITMSG_SUCCESS);
+            return;
+        }
+        else
+            ui_update_msg (worm, food, EXITMSG_NONE);
 
         napms (WORM_NAP_TIME);
     }
@@ -170,5 +184,19 @@ worm_check_food (worm_t *worm, food_t food[])
             food[i].pos.y = -1;
         }
     }
+}
+
+
+
+int
+food_count (food_t food[])
+{
+    int foodcount = 0;
+    for (int i = 0; i < FOOD_COUNT; i++)
+    {
+        if (food[i].pos.x != -1 && food[i].pos.y != -1)
+            foodcount++;
+    }
+    return foodcount;
 }
 
