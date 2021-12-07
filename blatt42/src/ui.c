@@ -62,6 +62,8 @@ ui_update_msg (worm_t *worm, food_t food[], exitmsg_t exitmsg)
         attroff (COLOR_PAIR (COLP_GREEN));
 
         nodelay (stdscr, FALSE);
+        refresh ();
+        napms (2000);
         getch ();
         game_deinit ();
     }
@@ -70,14 +72,16 @@ ui_update_msg (worm_t *worm, food_t food[], exitmsg_t exitmsg)
         attron (COLOR_PAIR (COLP_RED));
         switch (exitmsg)
         {
-            case EXITMSG_COLLISION_OBSTACLE: mvprintw (LINES - 1, 1, "Game Over - you ran into yourself! Press any key to continue.");    break;
-            case EXITMSG_COLLISION_SELF:     mvprintw (LINES - 1, 1, "Game Over - you ran into an obstacle! Press any key to continue."); break;
+            case EXITMSG_COLLISION_OBSTACLE: mvprintw (LINES - 1, 1, "Game Over - you ran into an obstacle! Press any key to continue."); break;
+            case EXITMSG_COLLISION_SELF:     mvprintw (LINES - 1, 1, "Game Over - you ran into yourself! Press any key to continue.");    break;
             case EXITMSG_OOB:                mvprintw (LINES - 1, 1, "Game Over - you went out of bounds! Press any key to continue.");   break;
             default: break;
         }
         attroff (COLOR_PAIR (COLP_RED));
 
         nodelay (stdscr, FALSE);
+        refresh ();
+        napms (2000);
         getch ();
         game_deinit ();
     }

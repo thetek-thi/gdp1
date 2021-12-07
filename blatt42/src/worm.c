@@ -35,11 +35,15 @@ worm_init (worm_t     *worm,
 void
 worm_show (worm_t *worm)
 {
-    pos_t pos_head    = worm->pos[worm->headindex];
-    pos_t pos_prehead = worm->pos[(worm->headindex + WORM_MAX_LEN - 1) % WORM_MAX_LEN];
+    pos_t pos_head       = worm->pos[worm->headindex];
+    pos_t pos_prehead    = worm->pos[(worm->headindex + WORM_MAX_LEN - 1) % WORM_MAX_LEN];
+    pos_t pos_preprehead = worm->pos[(worm->headindex + WORM_MAX_LEN - 2) % WORM_MAX_LEN];
+    pos_t pos_tail       = worm->pos[(worm->headindex - worm->len + WORM_MAX_LEN + 1) % WORM_MAX_LEN];
+    pos_t pos_pretail    = worm->pos[(worm->headindex - worm->len + WORM_MAX_LEN + 2) % WORM_MAX_LEN];
 
     attron (COLOR_PAIR (worm->color));
 
+    // draw head with appropriate direction
     if (pos_head.x == pos_prehead.x - 1)
         mvprintw (pos_head.y + 1, pos_head.x * 2 + 1, "🭮█");
     else if (pos_head.x == pos_prehead.x + 1)
@@ -49,11 +53,19 @@ worm_show (worm_t *worm)
     else if (pos_head.y == pos_prehead.y + 1)
         mvprintw (pos_head.y + 1, pos_head.x * 2 + 1, "🭓🭞");
 
-    mvprintw (pos_prehead.y + 1, pos_prehead.x * 2 + 1, "██");
+    // draw middle piece with the corner cut away
+    if ((pos_head.x == pos_prehead.x - 1 && pos_preprehead.y == pos_prehead.y - 1) || (pos_preprehead.x == pos_prehead.x - 1 && pos_head.y == pos_prehead.y - 1))
+        mvprintw (pos_prehead.y + 1, pos_prehead.x * 2 + 1, "█🭠");
+    else if ((pos_head.x == pos_prehead.x - 1 && pos_preprehead.y == pos_prehead.y + 1) || (pos_preprehead.x == pos_prehead.x - 1 && pos_head.y == pos_prehead.y + 1))
+        mvprintw (pos_prehead.y + 1, pos_prehead.x * 2 + 1, "█🭏");
+    else if ((pos_head.x == pos_prehead.x + 1 && pos_preprehead.y == pos_prehead.y - 1) || (pos_preprehead.x == pos_prehead.x + 1 && pos_head.y == pos_prehead.y - 1))
+        mvprintw (pos_prehead.y + 1, pos_prehead.x * 2 + 1, "🭕█");
+    else if ((pos_head.x == pos_prehead.x + 1 && pos_preprehead.y == pos_prehead.y + 1) || (pos_preprehead.x == pos_prehead.x + 1 && pos_head.y == pos_prehead.y + 1))
+        mvprintw (pos_prehead.y + 1, pos_prehead.x * 2 + 1, "🭄█");
+    else
+        mvprintw (pos_prehead.y + 1, pos_prehead.x * 2 + 1, "██");
 
-    pos_t pos_tail    = worm->pos[(worm->headindex - worm->len + WORM_MAX_LEN + 1) % WORM_MAX_LEN];
-    pos_t pos_pretail = worm->pos[(worm->headindex - worm->len + WORM_MAX_LEN + 2) % WORM_MAX_LEN];
-
+    // draw tail with appropriate direction
     if (pos_tail.x == pos_pretail.x - 1)
         mvprintw (pos_tail.y + 1, pos_tail.x * 2 + 1, "🭨█");
     else if (pos_tail.x == pos_pretail.x + 1)
@@ -62,8 +74,6 @@ worm_show (worm_t *worm)
         mvprintw (pos_tail.y + 1, pos_tail.x * 2 + 1, "🭍🭂");
     else if (pos_tail.y == pos_pretail.y + 1)
         mvprintw (pos_tail.y + 1, pos_tail.x * 2 + 1, "🭞🭓");
-    else
-        mvprintw (pos_tail.y + 1, pos_tail.x * 2 + 1, "██");
 
     attroff (COLOR_PAIR (worm->color));
 }
