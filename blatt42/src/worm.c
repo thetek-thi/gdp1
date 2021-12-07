@@ -15,9 +15,7 @@ worm_init (worm_t     *worm,
            pos_t       startpos,
            int         startlen,
            int         startdir,
-           colorpair_t color,
-           colorpair_t color_dark,
-           colorpair_t color_darker)
+           colorpair_t color)
 {
     pos_t invalid_pos = { -1, -1 };
 
@@ -30,8 +28,6 @@ worm_init (worm_t     *worm,
     worm->len_pref     = startlen;
     worm->dir          = startdir;
     worm->color        = color;
-    worm->color_dark   = color_dark;
-    worm->color_darker = color_darker;
 }
 
 
@@ -39,20 +35,38 @@ worm_init (worm_t     *worm,
 void
 worm_show (worm_t *worm)
 {
+    pos_t pos_head    = worm->pos[worm->headindex];
+    pos_t pos_prehead = worm->pos[(worm->headindex + WORM_MAX_LEN - 1) % WORM_MAX_LEN];
+
     attron (COLOR_PAIR (worm->color));
-    pos_t pos_head = worm->pos[worm->headindex];
-    mvprintw (pos_head.y + 1, pos_head.x * 2 + 1, "██");
+
+    if (pos_head.x == pos_prehead.x - 1)
+        mvprintw (pos_head.y + 1, pos_head.x * 2 + 1, "🭮█");
+    else if (pos_head.x == pos_prehead.x + 1)
+        mvprintw (pos_head.y + 1, pos_head.x * 2 + 1, "█🭬");
+    else if (pos_head.y == pos_prehead.y - 1)
+        mvprintw (pos_head.y + 1, pos_head.x * 2 + 1, "🭂🭍");
+    else if (pos_head.y == pos_prehead.y + 1)
+        mvprintw (pos_head.y + 1, pos_head.x * 2 + 1, "🭓🭞");
+
+    mvprintw (pos_prehead.y + 1, pos_prehead.x * 2 + 1, "██");
+
+    pos_t pos_tail    = worm->pos[(worm->headindex - worm->len + WORM_MAX_LEN + 1) % WORM_MAX_LEN];
+    pos_t pos_pretail = worm->pos[(worm->headindex - worm->len + WORM_MAX_LEN + 2) % WORM_MAX_LEN];
+
+
+    if (pos_tail.x == pos_pretail.x - 1)
+        mvprintw (pos_tail.y + 1, pos_tail.x * 2 + 1, "🭨█");
+    else if (pos_tail.x == pos_pretail.x + 1)
+        mvprintw (pos_tail.y + 1, pos_tail.x * 2 + 1, "█🭪");
+    else if (pos_tail.y == pos_pretail.y - 1)
+        mvprintw (pos_tail.y + 1, pos_tail.x * 2 + 1, "🭍🭂");
+    else if (pos_tail.y == pos_pretail.y + 1)
+        mvprintw (pos_tail.y + 1, pos_tail.x * 2 + 1, "🭞🭓");
+    else
+        mvprintw (pos_tail.y + 1, pos_tail.x * 2 + 1, "██");
+
     attroff (COLOR_PAIR (worm->color));
-
-    attron (COLOR_PAIR (worm->color_dark));
-    pos_t pos_dark = worm->pos[(worm->headindex + WORM_MAX_LEN - 1) % WORM_MAX_LEN];
-    mvprintw (pos_dark.y + 1, pos_dark.x * 2 + 1, "██");
-    attroff (COLOR_PAIR (worm->color_dark));
-
-    attron (COLOR_PAIR (worm->color_darker));
-    pos_t pos_tail = worm->pos[(worm->headindex - worm->len + WORM_MAX_LEN + 1) % WORM_MAX_LEN];
-    mvprintw (pos_tail.y + 1, pos_tail.x * 2 + 1, "██");
-    attroff (COLOR_PAIR (worm->color_darker));
 }
 
 
@@ -80,7 +94,7 @@ worm_read_input (worm_t *worm, food_t food[])
         worm_move       (worm);
         worm_show       (worm);
         worm_check_food (worm, food);
-        ui_update_msg   (worm);
+        ui_update_msg   (worm, food);
 
         if (worm_check_collisions (worm) || worm_check_oob (worm))
             return;

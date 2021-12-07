@@ -35,10 +35,10 @@ ui_draw_frame ()
 
 
 void
-ui_update_msg (worm_t *worm)
+ui_update_msg (worm_t *worm, food_t food[])
 {
     attron (COLOR_PAIR (COLP_ORANGE));
-    mvprintw (LINES-1, 1, "POS x    y      LEN");
+    mvprintw (LINES-1, 1, "POS x    y       LEN       FOOD");
     attroff (COLOR_PAIR (COLP_ORANGE));
 
     attron (COLOR_PAIR (COLP_FG));
@@ -46,7 +46,16 @@ ui_update_msg (worm_t *worm)
     mvprintw (LINES-1,  7, "%02d", headpos.x);
     mvprintw (LINES-1, 12, "%02d", headpos.y);
 
-    mvprintw (LINES-1, 21, "%2d", worm->len_pref);
+    mvprintw (LINES-1, 22, "%2d", worm->len_pref);
+
+    int foodcount = 0;
+    for (int i = 0; i < FOOD_COUNT; i++)
+    {
+        if (food[i].pos.x != -1 && food[i].pos.y != -1)
+            foodcount++;
+    }
+    mvprintw (LINES-1, 33, "%2d", foodcount);
+
     attroff (COLOR_PAIR (COLP_FG));
 }
 
@@ -66,7 +75,7 @@ ui_draw_food (food_t food[])
         }
 
         attron (COLOR_PAIR (color));
-        mvprintw (food[i].pos.y + 1, (food[i].pos.x * 2) + 1, "██");
+        mvprintw (food[i].pos.y + 1, (food[i].pos.x * 2) + 1, "");
         attroff (COLOR_PAIR (color));
     }
 }

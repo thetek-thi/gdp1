@@ -24,12 +24,10 @@ typedef struct {
     int         headindex;
     dir_t       dir;
     colorpair_t color;
-    colorpair_t color_dark;
-    colorpair_t color_darker;
 } worm_t;
 
 
-void worm_init             (worm_t *worm, pos_t startpos, int startlen, int startdir, colorpair_t color, colorpair_t color_dark, colorpair_t color_darker);
+void worm_init             (worm_t *worm, pos_t startpos, int startlen, int startdir, colorpair_t color);
 void worm_show             (worm_t *worm);
 void worm_read_input       (worm_t *worm, food_t food[]);
 void worm_move             (worm_t *worm);

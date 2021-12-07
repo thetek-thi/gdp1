@@ -8,7 +8,7 @@
 #define WORM_MAX_LEN  100
 #define WORM_NAP_TIME 150
 
-#define FOOD_COUNT 10
+#define FOOD_COUNT 15
 
 
 #endif

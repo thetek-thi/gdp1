@@ -52,7 +52,7 @@ game_run ()
 
     worm_t worm;
     pos_t  startpos = { 1, 1 };
-    worm_init (&worm, startpos, 10, DIR_RIGHT, COLP_GREEN, COLP_DARKGREEN, COLP_DARKERGREEN);
+    worm_init (&worm, startpos, 10, DIR_RIGHT, COLP_GREEN);
 
     food_t food[FOOD_COUNT];
     for (int i = 0; i < FOOD_COUNT; i++)
