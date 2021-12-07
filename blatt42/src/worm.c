@@ -54,7 +54,6 @@ worm_show (worm_t *worm)
     pos_t pos_tail    = worm->pos[(worm->headindex - worm->len + WORM_MAX_LEN + 1) % WORM_MAX_LEN];
     pos_t pos_pretail = worm->pos[(worm->headindex - worm->len + WORM_MAX_LEN + 2) % WORM_MAX_LEN];
 
-
     if (pos_tail.x == pos_pretail.x - 1)
         mvprintw (pos_tail.y + 1, pos_tail.x * 2 + 1, "🭨█");
     else if (pos_tail.x == pos_pretail.x + 1)
