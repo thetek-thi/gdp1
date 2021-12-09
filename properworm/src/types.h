@@ -8,6 +8,14 @@ typedef struct {
 } pos_t;
 
 
+typedef enum {
+    DIR_DOWN,
+    DIR_RIGHT,
+    DIR_LEFT,
+    DIR_UP,
+} dir_t;
+
+
 typedef struct {
     pos_t pos;
     int   value;

@@ -64,7 +64,34 @@ game_run ()
 
     ui_draw_food (food);
 
+    pos_t obstacles[OBSTACLE_MAX_COUNT * OBSTACLE_MAX_LEN];
+    int   index = 0;
+    for (int i = 0; i < OBSTACLE_MIN_COUNT + rand () % (OBSTACLE_MAX_COUNT - OBSTACLE_MIN_COUNT); i++)
+    {
+        pos_t obstacle_pos        = { rand () % (COLS / 2 - 2 - OBSTACLE_MAX_LEN), rand () % (LINES - 4 - OBSTACLE_MAX_LEN) };
+        int   obstacle_extend_len = OBSTACLE_MIN_LEN + rand () % (OBSTACLE_MAX_LEN - OBSTACLE_MIN_LEN);
+        dir_t obstacle_extend_dir = rand () % 2;
+        for (int j = 0; j < obstacle_extend_len; j++)
+        {
+            obstacles[index] = obstacle_pos;
+            switch (obstacle_extend_dir)
+            {
+                case DIR_DOWN:  obstacle_pos.y++; break;
+                case DIR_RIGHT: obstacle_pos.x++; break;
+                default: break;
+            }
+            index++;
+        }
+    }
+    for (; index < OBSTACLE_MAX_COUNT * OBSTACLE_MAX_LEN; index++)
+    {
+        pos_t empty_obstacle = { -1, -1 };
+        obstacles[index] = empty_obstacle;
+    }
+
+    ui_draw_obstacles (obstacles);
+
     worm_show (&worm);
-    worm_read_input (&worm, food);
+    worm_read_input (&worm, food, obstacles);
 }
 

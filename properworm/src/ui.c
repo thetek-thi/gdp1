@@ -81,7 +81,7 @@ ui_update_msg (worm_t *worm, food_t food[], exitmsg_t exitmsg)
 
         nodelay (stdscr, FALSE);
         refresh ();
-        napms (2000);
+        napms (500);
         getch ();
         game_deinit ();
     }
@@ -106,5 +106,16 @@ ui_draw_food (food_t food[])
         mvprintw (food[i].pos.y + 1, (food[i].pos.x * 2) + 1, "");
         attroff (COLOR_PAIR (color));
     }
+}
+
+
+
+void
+ui_draw_obstacles (pos_t obstacles[])
+{
+    attron (COLOR_PAIR (COLP_RED));
+    for (int i = 0; i < (OBSTACLE_MAX_COUNT * OBSTACLE_MAX_LEN); i++)
+        mvprintw (obstacles[i].y + 1, (obstacles[i].x * 2) + 1, "▒▒");
+    attroff (COLOR_PAIR (COLP_RED));
 }
 

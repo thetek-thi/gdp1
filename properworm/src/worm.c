@@ -81,7 +81,7 @@ worm_show (worm_t *worm)
 
 
 void
-worm_read_input (worm_t *worm, food_t food[])
+worm_read_input (worm_t *worm, food_t food[], pos_t obstacles[])
 {
     int  input;
     bool endloop;
@@ -101,12 +101,16 @@ worm_read_input (worm_t *worm, food_t food[])
         }
 
         worm_move       (worm);
-        worm_show       (worm);
         worm_check_food (worm, food);
 
         if (worm_check_collisions (worm))
         {
             ui_update_msg (worm, food, EXITMSG_COLLISION_SELF);
+            return;
+        }
+        else if (worm_check_obstacle (worm, obstacles))
+        {
+            ui_update_msg(worm, food, EXITMSG_COLLISION_OBSTACLE);
             return;
         }
         else if (worm_check_oob (worm))
@@ -116,11 +120,15 @@ worm_read_input (worm_t *worm, food_t food[])
         }
         else if (food_count (food) <= 0)
         {
+            worm_show (worm);
             ui_update_msg (worm, food, EXITMSG_SUCCESS);
             return;
         }
         else
+        {
             ui_update_msg (worm, food, EXITMSG_NONE);
+            worm_show (worm);
+        }
 
         napms (WORM_NAP_TIME);
     }
@@ -175,6 +183,20 @@ worm_check_oob (worm_t *worm)
 {
     pos_t headpos = worm->pos[worm->headindex];
     return (headpos.x < 0 || headpos.x > (COLS / 2 - 2) || headpos.y < 0 || headpos.y > (LINES - 4));
+}
+
+
+
+bool
+worm_check_obstacle (worm_t *worm, pos_t obstacles[])
+{
+    pos_t headpos = worm->pos[worm->headindex];
+    for (int i = 0; i < OBSTACLE_MAX_COUNT * OBSTACLE_MAX_LEN; i++)
+    {
+        if (headpos.x == obstacles[i].x && headpos.y == obstacles[i].y)
+            return true;
+    }
+    return false;
 }
 
 

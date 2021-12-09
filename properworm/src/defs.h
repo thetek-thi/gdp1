@@ -10,6 +10,11 @@
 
 #define FOOD_COUNT 15
 
+#define OBSTACLE_MIN_COUNT 10
+#define OBSTACLE_MAX_COUNT 20
+#define OBSTACLE_MIN_LEN    8
+#define OBSTACLE_MAX_LEN   15
+
 
 #endif
 
