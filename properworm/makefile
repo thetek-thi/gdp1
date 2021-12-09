@@ -1,56 +1,53 @@
-#Compiler and Linker
-CC          := gcc
+# compiler and linker
+CC        := gcc
 
-#The Target Binary Program
-TARGET      := worm
+# target binary
+TARGET    := worm
 
-#The Directories, Source, Includes, Objects, Binary and Resources
-SRCDIR      := src
-INCDIR      := inc
-BUILDDIR    := obj
-TARGETDIR   := bin
-SRCEXT      := c
-DEPEXT      := d
-OBJEXT      := o
+# source, object and binary folders
+SRCDIR    := src
+BUILDDIR  := obj
+TARGETDIR := bin
+SRCEXT    := c
+DEPEXT    := d
+OBJEXT    := o
 
-#Flags, Libraries and Includes
-CFLAGS      := -Wall -g
-LIB         := -lncursesw
-INC         := -I$(INCDIR) -I/usr/local/include
-INCDEP      := -I$(INCDIR)
+# flags and libraries
+CFLAGS    := -Wall -g
+LIB       := -lncursesw
 
 #---------------------------------------------------------------------------------
-#DO NOT EDIT BELOW THIS LINE
+# DO NOT EDIT BELOW THIS LINE
 #---------------------------------------------------------------------------------
-SOURCES     := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
-OBJECTS     := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
+SOURCES   := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+OBJECTS   := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 
 all: directories $(TARGET)
 
-#Remake
+# remake
 remake: cleaner all
 
-#Make the Directories
+# make the directories
 directories:
 	@mkdir -p $(TARGETDIR)
 	@mkdir -p $(BUILDDIR)
 
-#Clean only Objecst
+# clean only objects
 clean:
 	@$(RM) -rf $(BUILDDIR)
 
-#Full Clean, Objects and Binaries
+# full clean, objects and binaries
 cleaner: clean
 	@$(RM) -rf $(TARGETDIR)
 
-#Pull in dependency info for *existing* .o files
+# pull in dependency info for *existing* .o files
 -include $(OBJECTS:.$(OBJEXT)=.$(DEPEXT))
 
-#Link
+# link
 $(TARGET): $(OBJECTS)
 	$(CC) -o $(TARGETDIR)/$(TARGET) $^ $(LIB)
 
-#Compile
+# compile
 $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
@@ -60,6 +57,6 @@ $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 	@sed -e 's/.*://' -e 's/\\$$//' < $(BUILDDIR)/$*.$(DEPEXT).tmp | fmt -1 | sed -e 's/^ *//' -e 's/$$/:/' >> $(BUILDDIR)/$*.$(DEPEXT)
 	@rm -f $(BUILDDIR)/$*.$(DEPEXT).tmp
 
-#Non-File Targets
+# non-file targets
 .PHONY: all remake clean cleaner
 
