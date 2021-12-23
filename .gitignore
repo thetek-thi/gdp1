@@ -11,6 +11,9 @@
 *.d
 *.o
 
+# ignore .ccls-cache folder
+.ccls-cache
+
 # unignore makefiles
 !Makefile
 !makefile
